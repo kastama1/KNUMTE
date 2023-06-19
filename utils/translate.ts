@@ -1,9 +1,11 @@
 import axios from "axios/index";
+// @ts-ignore
+import {GOOGLE_API_KEY} from "@env";
 
 export const translate = async (text: string, languageFrom: string, languageTo: string) => {
     const options = {
         method: 'POST',
-        url: 'https://translation.googleapis.com/language/translate/v2?key=AIzaSyD0VJTD5xcx7zF8dzFATsNeI7ITikzFnp0',
+        url: 'https://translation.googleapis.com/language/translate/v2?key=' + GOOGLE_API_KEY,
         params: {
             "q": text,
             "source": languageFrom,
