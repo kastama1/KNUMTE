@@ -9,12 +9,15 @@ export default function Saved() {
     return (
         <View style={styles.container}>
 
-            <FlatList
-                data={savedItems}
-                renderItem={itemData => {
-                    return <ResultItem id={itemData.item.id}/>
-                }}
-            />
+            {
+                savedItems.length > 0 &&
+                <FlatList
+                    data={savedItems}
+                    renderItem={itemData => {
+                        return <ResultItem id={itemData.item.id}/>
+                    }}
+                />
+            }
 
         </View>
     );
