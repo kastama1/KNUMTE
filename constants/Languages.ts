@@ -69,11 +69,11 @@ export default {
             "name": "Cebuano"
         },
         {
-            "value": "zh-CN or zh (BCP-47)",
+            "value": "zh-CN",
             "name": "Chinese (Simplified)"
         },
         {
-            "value": "zh-TW (BCP-47)",
+            "value": "zh-TW",
             "name": "Chinese (Traditional)"
         },
         {
@@ -173,7 +173,7 @@ export default {
             "name": "Hawaiian"
         },
         {
-            "value": "he or iw",
+            "value": "he",
             "name": "Hebrew"
         },
         {
@@ -217,7 +217,7 @@ export default {
             "name": "Japanese"
         },
         {
-            "value": "jv or jw",
+            "value": "jv",
             "name": "Javanese"
         },
         {

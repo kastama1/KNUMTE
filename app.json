@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "kumte",
-    "slug": "kumte",
+    "name": "Translator",
+    "slug": "translator",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,17 +16,34 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses the location.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app uses the location.",
+        "NSLocationAlwaysUsageDescription": "This app uses the location."
+      },
+      "bundleIdentifier": "com.anonymous.translator"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ],
+      "package": "com.anonymous.translator"
     },
     "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "26b21465-6c1e-4f58-9cf7-81507be6ff1d"
+      }
     }
   }
 }

@@ -1,4 +1,13 @@
-import {StyleSheet, TextInput, TouchableOpacity, Text, View, FlatList} from 'react-native';
+import {
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
+    Text,
+    View,
+    FlatList,
+    Platform,
+    PermissionsAndroid
+} from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Colors from "../../constants/Colors";
@@ -14,6 +23,9 @@ import uuid from "react-native-uuid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {setSavedItem} from "../../store/savedSlice";
 import {Keyboard} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
+import {getLocale} from "../../utils/getLocale";
+import clm from "country-locale-map";
 
 export default function Home() {
     const defaultFrom = {"name": "Czech", "value": "cs"};
@@ -41,6 +53,58 @@ export default function Home() {
         });
     }
 
+    const requestLocationPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Location Permission',
+                    message: 'Can we access your location?',
+                    buttonNeutral: undefined,
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            return granted === 'granted';
+        } catch (err) {
+            return false;
+        }
+    };
+
+    const getLocation = () => {
+        const result = requestLocationPermission();
+
+        result.then(async res => {
+            if (res) {
+                Geolocation.getCurrentPosition(
+                    (position) => {
+                        getLocale(position.coords.latitude, position.coords.longitude).then((result) => {
+                            if (result) {
+                                const locale = result.results[0].address_components[0].short_name;
+                                const country = clm.getCountryByAlpha2(locale);
+
+                                if (country) {
+                                    setLanguageFrom(findLanguage(country.languages[0]) || defaultFrom);
+                                }
+                            }
+                        });
+                    },
+                    (error) => {
+                        console.error(error);
+                    },
+                    {
+                        enableHighAccuracy: false,
+                        timeout: 30000,
+                        maximumAge: 1000
+                    }
+                );
+            } else {
+                setLanguageFrom(defaultFrom)
+            }
+
+        })
+    }
+
     useEffect(() => {
         if (from) {
             setLanguageFrom(findLanguage(from) || defaultFrom);
@@ -52,7 +116,8 @@ export default function Home() {
     }, [params, navigation]);
 
     useEffect(() => {
-        loadData()
+        getLocation();
+        loadData();
     }, []);
 
     useEffect(() => {
